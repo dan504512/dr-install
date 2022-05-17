@@ -16,27 +16,29 @@ esac done
 [ -z "$branch" ] && branch="main"
 
 # extract archive
-dir=$(mktemp -d)
-homedir=$(mktemp -d)
-echo "$homedir"
-cp "$archive" "$dir/archive.zip"
-cd "$dir"
+gitdir=$(mktemp -d)
+gpgdir=$(mktemp -d)
+cp "$archive" "$gpgdir/archive.zip"
+cd "$gpgdir"
 unzip "archive.zip"
 
 # import gpg key pair for git-secret
-gpg --homedir "$homedir" --import public.key
-gpg --homedir "$homedir" --allow-secret-key-import --import secret.key
+gpg --homedir "$gpgdir" --import public.key
+gpg --homedir "$gpgdir" --allow-secret-key-import --import secret.key
 
 # read config
 git_remote_with_creds="$(sed -n '1p' config)"
 git_remote="$(sed -n '2p' config)"
 
-# cleanup
-rm archive.zip public.key secret.key config
-
 # set up repo
-git clone --recursive -b "$branch" --depth 1 --recurse-submodules "${git_remote_with_creds}" "$dir" #>/dev/null 2>&1
-git-secret reveal -d "$homedir"
+cd "$gitdir"
+git clone --recursive -b "$branch" --depth 1 --recurse-submodules "${git_remote_with_creds}" "$gitdir" >/dev/null 2>&1
+git-secret reveal -d "$gpgdir"
 git remote set-url origin "$git_remote"
 
-#rm -rf $dir"
+# run install
+make install
+
+# cleanup
+rm -rf "$gitdir"
+rm -rf "$gpgdir"
