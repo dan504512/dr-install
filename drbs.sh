@@ -4,8 +4,8 @@
 # License: GNU GPLv3
 
 aurhelper="yay"
-name="drbs"
-pass1="password"
+name="$1"
+pass1="$2"
 
 ### FUNCTIONS ###
 error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit; }
