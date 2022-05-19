@@ -12,7 +12,7 @@ cd dr-install
 
 ./drbs.sh <user-name> <password>
 
-su - <user-name>
+su - <user-name> # or use root? but "export USER=<user-name>"
 
 ./dr-install -a dr-etc.zip -b develop
 
