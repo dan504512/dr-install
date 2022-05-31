@@ -4,10 +4,10 @@
 # License: GNU GPLv3
 
 ### OPTIONS AND VARIABLES ###
-while getopts ":h:d:a:" o; do case "${o}" in
+while getopts ":h:a:d:" o; do case "${o}" in
   h) printf "-a? archive\\n-d? directory to reveal\\n" && exit ;;
   a) archive=${OPTARG} ;;
-  d) gitdir=${OPTARG} ;;
+  d) gitdir=$(realpath ${OPTARG}) ;;
   *) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
 esac done
 
@@ -27,7 +27,7 @@ gpg --homedir "$gpgdir" --allow-secret-key-import --import secret.key
 
 # set up repo
 cd "$gitdir"
-git-secret reveal -d "$gpgdir"
+git secret reveal -d "$gpgdir"
 
 # cleanup
 rm -rf "$gpgdir"
