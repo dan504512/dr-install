@@ -1,0 +1,33 @@
+#!/bin/sh
+# dr-install
+# by Dan <drobe504@gmail.com>
+# License: GNU GPLv3
+
+### OPTIONS AND VARIABLES ###
+while getopts ":h:d:a:" o; do case "${o}" in
+  h) printf "-a? archive\\n-d? directory to reveal\\n" && exit ;;
+  a) archive=${OPTARG} ;;
+  d) gitdir=${OPTARG} ;;
+  *) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
+esac done
+
+# DEFAULTS:
+[ -z "$gitdir" ] && dir="~/"
+[ -z "$archive" ] && archive=$(cd /etc/dr-install/ && find ~+ -name '*.zip' | fzf --prompt "Select archive: ")
+
+# extract archive
+gpgdir=$(mktemp -d)
+cp "$archive" "$gpgdir/archive.zip"
+cd "$gpgdir"
+unzip "archive.zip"
+
+# import gpg key pair for git-secret
+gpg --homedir "$gpgdir" --import public.key
+gpg --homedir "$gpgdir" --allow-secret-key-import --import secret.key
+
+# set up repo
+cd "$gitdir"
+git-secret reveal -d "$gpgdir"
+
+# cleanup
+rm -rf "$gpgdir"

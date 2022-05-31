@@ -5,14 +5,14 @@
 
 ### OPTIONS AND VARIABLES ###
 while getopts ":a:b:" o; do case "${o}" in
-  h) printf "Optional arguments for custom use:\\n  -a: encrypted archive containing config and gpg key pair\\n  -b: git repo branch\\n  -h: Show this message\\n" && exit ;;
+  h) printf "-a: encrypted archive containing config and gpg key pair\\n-b: git repo branch\\n" && exit ;;
   a) archive=${OPTARG} ;;
   b) branch=${OPTARG} ;;
   *) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
 esac done
 
 # DEFAULTS:
-[ -z "$archive" ] && exit
+[ -z "$archive" ] && archive=$(cd /etc/dr-install/ && find ~+ -name '*.zip' | fzf --prompt "Select archive: ")
 [ -z "$branch" ] && branch="main"
 
 # extract archive
