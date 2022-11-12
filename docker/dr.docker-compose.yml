@@ -1,0 +1,15 @@
+volumes:
+  dr_repos:
+  dr_docker:
+services:
+  dr:
+    image: dr:2022-06-01
+    command: bash #/sbin/init
+    container_name: dr
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - dr_repos:/home/dan/repos
+      - /Users/dan/drive:/home/dan/drive:delegated
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    privileged: true
