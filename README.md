@@ -3,7 +3,7 @@
 ## install steps
 
 optional:
-pacman -S archlinux-keyring
+pacman -S archlinux-keyring &&
 pacman-key --refresh-keys
 
 sudo pacman -Syu
