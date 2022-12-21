@@ -14,7 +14,7 @@ git clone https://github.com/drobe504/dr-install.git
 
 cd dr-install
 
-./dr-install-bootstrap <user-name> <password>
+./dr-install-bootstrap user-name password
 
 su - <user-name> # or use root? but "export USER=<user-name>"
 
