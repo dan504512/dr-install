@@ -2,11 +2,9 @@
 
 ## install steps
 
-optional:
+pacman -Syu
 pacman -S archlinux-keyring &&
 pacman-key --refresh-keys
-
-sudo pacman -Syu
 
 sudo pacman -S git
 
@@ -16,7 +14,7 @@ cd dr-install
 
 ./dr-install-bootstrap user-name password
 
-su - <user-name> # or use root? but "export USER=<user-name>"
+su - `<user-name>` # or use root? but "export USER=<user-name>"
 
 ./dr-install -a dr-etc.zip -b develop
 
